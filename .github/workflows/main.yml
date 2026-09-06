@@ -2,7 +2,7 @@ name: 'Daily Job'
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # UTC
+    - cron: '45 23 * * *'  # UTC
   workflow_dispatch:
     inputs:
       environment:
@@ -36,15 +36,15 @@ jobs:
       with:
         name: generated-files
         path: |
-          merged_output.txt
+          bbxx365.txt
           others_output.txt
+          work/*.txt
           
     - name: Commit changes
       run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
-          git add merged_output.txt merged_output.m3u merged_output_simple.txt merged_output_simple.m3u others_output.txt
-          git add live.txt live.m3u live_lite.txt live_lite.m3u
+          git add bbxx365.txt bbxx365.m3u bbxx365_lite.txt bbxx365_lite.m3u others_output.txt tiyu.html work/*.txt
           git commit -m ":tada:  AutoUpdate $(date +'%Y%m%d')"
 
           current_datetime=$(date +"%Y%m%d_%H%M%S")
@@ -56,7 +56,7 @@ jobs:
 
           # 将归档文件打包zip文件
           zip_filename="history/${current_datetime}_archive_output.zip"
-          zip -j "${zip_filename}" merged_output.txt others_output.txt
+          zip -j "${zip_filename}" others_output.txt
           git add "${zip_filename}"
           git commit -m "Archive zipfile: ${current_datetime}"
           
